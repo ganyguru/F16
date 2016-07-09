@@ -1,0 +1,160 @@
+body {
+  display: block;
+  margin: 8px;
+  background: #9DDDEF;
+
+    overflow-x: hidden !important;
+}
+.cloud {
+  position: absolute;
+  width: 200px;
+  height: 147px;
+ 
+}
+#ground{
+  position: absolute;
+  left: 0px;
+  top: 85%;
+  width: 13500px;
+  height: 90%;
+}
+#ground11
+{
+  border-top-left-radius: 15px;
+  position: absolute;
+  width: 6700px;
+  height: 100%;
+  left: 10200px;
+  background-image: url(../image/ground1.png);
+}
+.ground2
+{
+  position: absolute;
+  width: 4870px;
+  height: 100%;
+  left: 2830px;
+  background-image: url(../image/ground2.png);
+}
+#cloud-1 {
+  left: 10%;
+  bottom: 500px;
+   background-image: url(../image/cloud.png);
+}
+#cloud-2 {
+  left: 50%;
+  bottom: 400px;
+   background-image: url(../image/cloud2.png);
+}
+#cloud-3 {
+  left: 70%;
+  bottom: 450px;
+   background-image: url(../image/cloud.png);
+}
+#cloud-4 {
+  left: 90%;
+  bottom: 500px;
+  background-image: url(../image/cloud2.png);
+}
+
+#page {
+  left: 0px;
+  top: 0px;
+  width: 100%;
+ 
+}
+#container {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#hero
+{
+  position: relative;
+  left: 50%;
+  width: 125px;
+  height: 125px;
+  overflow: hidden;
+  background: #000;
+  background-size: 500px 250px;
+ background-repeat: no-repeat;
+}
+.hero-block
+{
+  position: fixed;
+  left: 50%;
+  margin-left: -125px;
+ z-index: 1;
+ 
+ }
+ .layer {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+}
+#layer-1
+{
+  width:1700px;
+}
+#layer-2
+{
+  width:1200px;
+}
+#layer-5
+{
+  width:1300px;
+}
+#tree
+{
+  position: absolute;
+  width: 100%;
+  height: 134.6px;
+  background:url(../image/tree.png);
+  background-size: 100px 134.6px;
+  top:95%;
+ 
+  background-repeat: repeat-x;
+  margin-top: -50px;
+}
+#fsr
+{
+  position: absolute;
+  width: 300px;
+  height: 404px;
+  background:url(../image/fsr.png);
+    background-repeat: no-repeat;
+  background-size: 300px 404px;
+  
+ z-index: 9999;
+
+  bottom: 14%;
+  left: 11200px;
+  
+}
+#layer-6
+{
+  width:3000px;
+}
+#layer-7
+{
+  width:17000px;
+}
+#layer-3
+{
+  width:1400px;
+}
+#layer-5
+{
+  width:2000px;
+}
+#layer-4
+{
+  width:17000px;
+}
+.down
+ {
+  bottom:5%;
+ }
