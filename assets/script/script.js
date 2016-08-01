@@ -7,24 +7,36 @@ var run=0;
 var heroDiv = document.getElementById("hero-block");
 var jump=0;
 var dinocounter=1;
+var dummyscroll1=1;
+var dummyscroll2=1;
 var jumpdivs=[];
 tcontact=0;
 var page1;
+var obstaclestartindex=-1;
+var obstacleendindex=-1;
 var contactHorizontalDistance;
 var lengthDiv=document.getElementById("layer-4");
 var page2;
 var heroRightEdge;
 var heroLeftEdge;
+var error=0;
+var dummyscroll=0;
+var fixedposition;
 screenspeed=0.6
 var touchStartX=0;
+var jumpon=0;
 var dinoRightEdge;
+var selectedObstacle;
 var dinoLeftEdge;
 var dino=document.getElementById('dino-block');
 var dinorun=0;
 var herocounter=1;
 mgate1=1;
+var obstacles=new Array();
+var currentobstacles=new Array();
 var sandi=0;
 mgate2=1;
+var h=80;
 var heroInterval;
 var touchCurrentX = 0;
 var slider=0;
@@ -110,17 +122,26 @@ function KeyboardController(keys, repeat) {
 
 KeyboardController({
 	37 : function(){
-			heroback();
+		RightandLeftedge()
+		if(checkobstacle(-1,0)==1)
+			{heroback();
+			checkfall();
+			MoveHeroBack();}
 	},
 	
 	39 : function(){
-		herofront();
+		RightandLeftedge()
+		if(checkobstacle(1,0)==1)
+			{herofront();
+			checkfall();
+			MoveHeroFront();}
 	},
 	
 	32: function(){
+		RightandLeftedge()
 	herojump();
 	
-	}},25);
+	}},1);
 
 
 
@@ -133,10 +154,154 @@ function enableScrollOrSwipe()
 	canScrollOrSwipe = true;
 }
 
+function loadingout()
+{
+
+	$("#farcloud").removeClass();
+	$("#nearcloud").removeClass();
+	$("#flight").removeClass();
+	$("#farcloud").addClass("skyfall");
+	$("#nearcloud").addClass("skyfall");
+	$("#fallline").css({"display":"block"});
+	$("#pandafall").css({"display":"block"});
+	$("#flight").css({"background-position":"0px -408.56px"});
+	//$("#container").show();
+	//$("#container").css({"top":"100%"});
+	$("#farcloud").appendTo(".sky1");
+	$("#nearcloud").appendTo(".sky1");
+	$("#sun").appendTo(".sky1");
+	$("#flight").stop().animate({top:"-500px"},1500,function(){});
+	setTimeout(function(){
+		
+		
+		
+			
+		$("#farcloud").removeClass();
+		$("#nearcloud").removeClass();	
+		$("#farcloud").addClass("loading2");
+		$("#nearcloud").addClass("loading1");
+		$("#pandafall").css({"margin-top":"-70px"});
+		$("#fallline").fadeOut();
+		//$("#loading").hide();
+			$("#pandafall").removeClass();
+			$("#pandafall").addClass("fallground");
+			$(".layer").addClass("groundup");
+			setTimeout(function(){
+				$("#hero-block").show();
+			},540);
+			pageVerticalPosition=0;
+previousPageVerticalPosition=0;
+	CreateDivs();
+	setPageHeight();
+	
+	dinorun=0;
+	run=1;
+	//orientContact();
+	RightandLeftedge();
+	
+makePageScrollable();
+addObstacles();
+selectedObstacle=$(obstacles[0]);
+for(i=0;i<obstacles.length;i++)
+currentobstacles.push($(obstacles[i]));
+
+		setElementProperties();
+
+
+	
+		
+	},2000);
+}
+
+
+var scrollkeys = {33: 1,34: 1,35: 1,36: 1,38: 1, 40: 1};
+
+function preventDefault(e) {
+  e = e || window.event;
+  if (e.preventDefault)
+      e.preventDefault();
+  e.returnValue = false;  
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (scrollkeys[e.keyCode]) {
+    	detectPageVerticalPosition();
+    	if(deltaPageVerticalPosition>0)
+	{
+		if(checkobstacle(speedArray[6]*deltaPageVerticalPosition,0)==0)
+			
+		   preventDefault(e);
+        //alert('hi');
+        return false;
+	}
+	else
+	{
+		if(checkobstacle(speedArray[6]*deltaPageVerticalPosition,0)==0)
+			
+		   preventDefault(e);
+        //alert('hi');
+        return false;
+	}
+        console.log("alli");
+        return true;
+    }
+    else
+    {
+    	enableScroll();
+    	KeyboardController({
+	37 : function(){
+		RightandLeftedge()
+		if(checkobstacle(-1,0)==1)
+			{heroback();
+			checkfall();
+			MoveHeroBack();}
+	},
+	
+	39 : function(){
+		RightandLeftedge()
+		if(checkobstacle(1,0)==1)
+			{herofront();
+			checkfall();
+			}
+			MoveHeroFront();
+	},
+	
+	32: function(){
+		RightandLeftedge()
+	herojump();
+	
+	}},1);
+
+    	return true;
+    }
+}
+
+function disableScroll() {
+  if (window.addEventListener) // older FF
+      window.addEventListener('DOMMouseScroll', preventDefault, false);
+  window.onwheel = preventDefault; // modern standard
+  window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+  window.ontouchmove  = preventDefault; // mobile
+  document.onkeydown  = preventDefaultForScrollKeys;
+}
+
+function enableScroll() {
+    if (window.removeEventListener)
+        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.onmousewheel = document.onmousewheel = null; 
+    window.onwheel = null; 
+    window.ontouchmove = null;  
+    document.onkeydown = null;  
+}
+
 
 window.onload = function()
 {
-
+	$(".layer").css({"top":"100%"});
+	setTimeout(function(){
+		loadingout();
+		
+	},5000);
 	if (deviceName != "computer")
 	{
 		initTouchEvents();
@@ -153,36 +318,248 @@ previousPageVerticalPosition=0;
 	RightandLeftedge();
 	
 makePageScrollable();
+addObstacles();
+selectedObstacle=$(obstacles[0]);
+for(i=0;i<obstacles.length;i++)
+currentobstacles.push($(obstacles[i]));
 window.scrollTo(0, 0);
-
+setElementProperties();
 }
+
+function setElementProperties()
+{
+	$(".castle").css({"width":0.485*$(document).width()+"px","left":0.5*$(document).width()+"px"});
+	$(".chinawall").css({"width":1.971*$(".chinawall").height()+"px","left":0.1*$(document).width()+"px"});
+}
+
 function RightandLeftedge()
 {
-	var x = 40
-	var y=50
-	heroRightEdge = 0.5 * (containerDiv.offsetWidth + heroDiv.offsetWidth) -x;
-	heroLeftEdge = 0.5 * (containerDiv.offsetWidth - heroDiv.offsetWidth) + y;
+	var x = $(".hero-block").offset().left+1+100/2;
+	var y=$(".hero-block").offset().left+1+100/2
+	heroLeftEdge = Math.floor($(".hero-block").offset().left+1+100/2);
+	heroRightEdge = Math.ceil($(".hero-block").offset().left+100/2+100);
 }
 window.onscroll = function (e)
 {
+	
+	var temp=1;
 
 	if (canScrollOrSwipe == true) //to avoid user swipe when window is still resizing after screen orientation changed on table
 	{
+		if(dummyscroll==0)
 		detectPageVerticalPosition();
+		
+		if(deltaPageVerticalPosition>0)
+	{
+		if(checkobstacle(speedArray[6]*deltaPageVerticalPosition,0)==0)
+		{
+			window.scrollTo(0, pageYOffset-speedArray[6]*deltaPageVerticalPosition);
+			temp=0;
+			//disableScroll();
+		
+		}
+		else
+			dummyscroll=0;
+		console.log("temp:"+temp);
+		if(temp==1 && dummyscroll==0)
+		{
 		AllFunctions();
+		}
+		if(temp==0)
+		{
+			if(fixedposition==-1)
+				fixedposition=previousPageVerticalPosition;
+			pageVerticalPosition=fixedposition;
+			previousPageVerticalPosition=fixedposition - deltaPageVerticalPosition;
+
+		}
+	}
+	else if(deltaPageVerticalPosition<0)
+	{
+		if(checkobstacle(speedArray[6]*deltaPageVerticalPosition,0)==0)
+			{window.scrollTo(0, pageYOffset-speedArray[6]*deltaPageVerticalPosition);
+				temp=0;
+		}
+		else
+			dummyscroll=0;
+		console.log("temp:"+temp);
+		if(temp==1)
+		AllFunctions();
+	if(temp==0)
+	{
+			if(fixedposition==-1)
+				fixedposition=previousPageVerticalPosition;
+			pageVerticalPosition=fixedposition;
+			previousPageVerticalPosition=fixedposition - deltaPageVerticalPosition;
+	}
+	}
+	
+	
+		
+	
 		
 	}
 	
 	
 	
+	//console.log(error);
 }
 function AllFunctions()
 {
 	
+	
+	//console.log(error);
+	if(anim==0 && error==0)
+	{
+
 	moveLayers();
+	checkfall();
+	//animateHero();
+	//selectObstacles();
+
+}
+	//transitions();
 	
 }
+function animateHero()
+{
+	if(run==1 && jump==0)
+	{
+		
+	 
+	heroInterval=setInterval(function(){MoveHero()},200);
+	run=0;
+	 
+}
+}
+function MoveHeroBack()
+{
 
+	
+	var pos=0;
+	
+		if(herocounter<12)
+		{
+			dummyscroll1++;
+			if(dummyscroll1%15==0)
+		{
+			herocounter++;
+			dummyscroll1=1;
+		}
+
+		}
+		else
+			{
+				herocounter=1;
+				
+			}
+			/*if(herocounter==1 || herocounter==2)
+				page1=pageVerticalPosition;
+			if(herocounter==4 || herocounter==3)
+				page2=pageVerticalPosition;*/
+	//console.log(herocounter);
+	
+	$("#hero").removeClass();
+
+	$("#hero").addClass("fhero"+herocounter);
+	
+
+}
+function MoveHeroFront()
+{
+
+		var pos=0;
+	
+		if(herocounter<12)
+		{
+			dummyscroll2++;
+			if(dummyscroll2%15==0)
+		{
+			herocounter++;
+			dummyscroll2=1;
+		}
+
+		}
+		else
+			{
+				herocounter=1;
+				
+			}
+			/*if(herocounter==1 || herocounter==2)
+				page1=pageVerticalPosition;
+			if(herocounter==4 || herocounter==3)
+				page2=pageVerticalPosition;*/
+	//console.log(herocounter);
+	
+	$("#hero").removeClass();
+
+	$("#hero").addClass("bhero"+herocounter);
+}
+function addObstacles()
+{
+	var len = $(".obstacles").length;
+	for(i=0;i<len;i++)
+		obstacles.push($(".obstacles")[i]);
+
+}
+function selectObstacles()
+{
+	var endobstacle;
+	var startobstacle;
+	if(obstacleendindex<0 && obstaclestartindex<0)
+	{
+		currentobstacles.push($(obstacles[0]));
+		obstaclestartindex=0;
+		obstacleendindex=0;
+	}
+	
+	if(deltaPageVerticalPosition>0)
+	{
+		endobstacle=$(obstacles[obstacleendindex+1]);
+		startobstacle=$(obstacles[obstaclestartindex]);
+
+		if(obstacleendindex<obstacles.length-1)
+		if((endobstacle.offset().left+endobstacle.width())>0 && endobstacle.offset().left<$("#container").width())
+		{
+			currentobstacles.push(endobstacle);
+			obstacleendindex++;
+			if(obstaclestartindex<0)
+				obstaclestartindex=0;
+		}
+		
+		if(obstaclestartindex>=0)
+		if(startobstacle.offset().left+startobstacle.width()<0)
+		{
+			currentobstacles.shift();
+			obstaclestartindex++;
+		}
+		console.log(currentobstacles);
+	}
+	else if(deltaPageVerticalPosition<0)
+	{
+		endobstacle=$(obstacles[obstacleendindex+1]);
+		startobstacle=$(obstacles[obstaclestartindex-1]);
+		if(obstaclestartindex>0)
+		if((startobstacle.offset().left+startobstacle.width())>0 && startobstacle.offset().left<$("#container").width())
+		{
+			currentobstacles.unshift(startobstacle);
+			obstaclestartindex--;
+		}
+
+
+		if(obstacleendindex<obstacles.length-1 && obstacleendindex>0)
+		if(endobstacle.offset().left+endobstacle.width()>$("#container").width())
+		{
+			currentobstacles.pop();
+			obstacleendindex--;
+		}
+	}
+}
+function transitions()
+{
+	if ( (pageVerticalPosition+10 > 1600))
+	$("body").stop().animate({backgroundColor: ["#ff0000", 'easeInCubic']}, 90, function() {});
+}
 function makePageScrollable()
 {
 	
@@ -283,12 +660,13 @@ function detectPageVerticalPosition()
 }
 function heroback()
 {
-	if($(heroDiv).offset().left>-61)
-	$(heroDiv).css({'left':(heroDiv.offsetLeft+125-4)});
+	if($(heroDiv).offset().left>-46)
+	$(heroDiv).css({'left':(heroDiv.offsetLeft+100-1)});
 }
 function herofront()
 {
-	$(heroDiv).css({'left':(heroDiv.offsetLeft+125+4)});
+	if($(heroDiv).offset().left+$(heroDiv).width()+50<$("#container").width())
+	$(heroDiv).css({'left':(heroDiv.offsetLeft+100+1)});
 }
 function herojump()
 {
@@ -304,23 +682,114 @@ function herojump()
 }
 function jumpup()
 {
-	
+	jumpon=1;
+	var x,up;	
 	anim1=requestAnimationFrame(jumpup);
 	if(anim==0)
 		sandi=parseInt($(".hero-block").css('bottom'),10);
 	anim++;
-	console.log(sandi);
-	if(anim<=100)
-    $(heroDiv).css({'bottom': Number(sandi) + (-0.08 * anim * (anim - 100)) + 'px'});
+	//console.log(anim);
+	if(deltaPageVerticalPosition>0)
+		x=1;
+	else
+		x=-1;
+	var height=$(".hero-block").height();
+	var herotop=$("#container").height()-parseInt($(".hero-block").css('bottom'),10)-height;
+	if(anim<42)
+		up=1;
+	else
+		up=0;
+	if(anim<=h)
+	{
+		console.log(parseInt($(".hero-block").css('bottom'),10));
+		RightandLeftedge();
+
+		if(checkobstacle(x,Number(sandi) + (-0.1 * anim * (anim - h)) -parseInt($(".hero-block").css('bottom'),10)+2 )==0)
+		{
+			if(up==0 && (herotop+height)>(selectedObstacle.offset().top-pageYOffset) && heroRightEdge+1 > selectedObstacle.offset().left )
+			{
+
+				console.log((herotop+height)+","+(selectedObstacle.offset().top-pageYOffset));
+				$(heroDiv).css({'bottom': $("#container").height()-selectedObstacle.offset().top+pageYOffset+1 + 'px'});		
+				cancelAnimationFrame(anim1);
+				sandi=parseInt($(".hero-block").css('bottom'),10);
+				anim=0;
+			}
+			else if(up==1 && (herotop)>(selectedObstacle.offset().top-pageYOffset+selectedObstacle.height()))
+			{
+				console.log($(".hero-block").css('bottom')+" , "+($("#container").height()-selectedObstacle.offset().top+pageYOffset));
+				anim=h-anim;
+				$(heroDiv).css({'bottom': Number(sandi) + (-0.1 * anim * (anim - h)) + 'px'});
+			}
+			else
+			{
+				$(heroDiv).css({'bottom': Number(sandi) + (-0.1 * anim * (anim - h)) + 'px'});
+			}
+			jumpon=0;
+		
+		}
+		else
+    	$(heroDiv).css({'bottom': Number(sandi) + (-0.1 * anim * (anim - h)) + 'px'});
+
+	}
       else
     {
+    	jumpon=0;
     	cancelAnimationFrame(anim1);
     	sandi=parseInt($(".hero-block").css('bottom'),10);
-    anim=0;
+    	anim=0;
+    	checkfall();
     }   
              	
 }
-function jumpdown()
+function checkobstacle(x,y)
 {
+	var pests=[];
+ 		pests.push($(".obstacles"));
+ 	var error=1;
+ 		//pests.push($(".cod"));
+ 		var height=$(".hero-block").height();
+ 	var width=$(".hero-block").width();
+ 	var hero=$(".hero-block").offset();
+ 	console.log();
+ 	var herotop=$("#container").height()-parseInt($(".hero-block").css('bottom'),10)-height;
+ 	for(i=0;i<currentobstacles.length;i++)
+	if (!((heroLeftEdge+x > $(currentobstacles[i]).offset().left + $(currentobstacles[i]).width()) || (heroRightEdge+x < $(currentobstacles[i]).offset().left) || herotop-y > $(currentobstacles[i]).offset().top + $(currentobstacles[i]).height()-pageYOffset || herotop + height-y < $(currentobstacles[i]).offset().top-pageYOffset ))
+ 		{
+ 			error=0;
+ 			selectedObstacle=currentobstacles[i];
+ 			break;
+ 		}
+ 		return error;
 
+}
+function topobstaclecheck()
+{
+	var height=$(".hero-block").height();
+	var herotop=$("#container").height()-parseInt($(".hero-block").css('bottom'),10)-height;
+	if((herotop+height)<(selectedObstacle.offset().top-pageYOffset)  &&   ((heroLeftEdge > selectedObstacle.offset().left + selectedObstacle.width()) || (heroRightEdge < selectedObstacle.offset().left)) && jumpon==0)
+		return 1;
+	else
+		return 0;
+
+}
+
+function checkfall()
+{
+	var x;
+	var top=topobstaclecheck();
+	var height=$(".hero-block").height();
+	var herotop=$("#container").height()-parseInt($(".hero-block").css('bottom'),10)-height;
+	if(deltaPageVerticalPosition>0)
+		x=1;
+	else
+		x=-1;
+	
+	if(top==1 && sandi!=33)
+	{
+		
+		anim=66;
+		sandi=33;
+		jumpup();
+	}
 }
