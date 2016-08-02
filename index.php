@@ -63,6 +63,20 @@ if(!defined('__PRAGYAN_CMS'))
 		
 	</div>
 	<div id="layer-7" class="layer">
+	<div class="tower"></div>
+	<div class="river1 river1move">
+			
+		</div>
+		<div class="river2 river2move">
+			
+		</div>
+	<div class="abovegrass"></div>
+	<div class="store"></div>
+	<div class="towergrass"></div>
+	<div class="rivergrass"></div>
+	<div class="black"></div>
+		
+	
 		<div id="ground">
 			<div class="ground1"></div>
 		</div>

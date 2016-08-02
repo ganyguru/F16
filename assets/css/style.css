@@ -35,6 +35,77 @@ body {
   background-size: stretch;
   background-repeat: no-repeat;
 }
+.abovegrass
+{
+  position: absolute;
+  background:url(../image/china/abovegrass.svg);
+  bottom: 0;
+  height: 50%;
+  background-size: stretch;
+  background-repeat: no-repeat;
+}
+.towergrass
+{
+  position: absolute;
+  background:url(../image/china/towergrass.svg);
+  bottom: 0;
+  height: 40%;
+  background-size: stretch;
+  background-repeat: no-repeat;
+}
+.rivergrass
+{
+  position: absolute;
+  background:url(../image/china/rivergrass.svg);
+  bottom: 0;
+  z-index: 9999;
+  height: 14%;
+  background-size: stretch;
+  background-repeat: no-repeat;
+}
+.store
+{
+  position: absolute;
+  background: #000;
+  bottom: 0;
+  z-index: 9999;
+  height: 30%;
+  bottom: calc( 5% + 55px );
+  background:url(../image/china/store.svg);
+  background-repeat: no-repeat;
+}
+.tower
+{
+ position: absolute;
+  background: #000;
+  bottom: 0;
+  z-index: 9999;
+  height:60%;
+  background:url(../image/china/tower.svg);
+  background-repeat: no-repeat; 
+}
+.river1
+{
+  position: absolute;
+  background: #000;
+  bottom: 0;
+  z-index: 9999;
+  height: 8%;
+  background:url(../image/china/river1.svg);
+  background-repeat: no-repeat;
+}
+
+.river2
+{
+  position: absolute;
+  background: #000;
+  bottom: 0;
+  z-index: 9999;
+  height: 5%;
+  background-size: contain;
+  background:url(../image/china/river2.svg);
+  background-repeat: no-repeat;
+}
 .ground1
 {
   background: url(../image/china/ground.svg);
@@ -44,7 +115,7 @@ body {
   width:100%;
   background-size: 13500px;
   background-position-y:-550px;
-  height: 90px;
+  height: 120px;
   left:-4px;
 }
 .ground2
@@ -118,7 +189,9 @@ body {
 }
 #pandafall
 {
+
   position: absolute;
+  z-index: 9999 !important;
   left: 50%;
   top:50%;
   right:0px;
@@ -259,7 +332,7 @@ body {
 }
 .down
  {
-  bottom:5%;
+  bottom:calc( 5% + 40px );
  }
  .obstacles
  {
@@ -423,7 +496,22 @@ body {
   -o-animation: flightmove 2s infinite linear;
   animation: flightmove 2s infinite linear; 
 }
-
+.river1move
+{
+ -webkit-animation: river1move 2s infinite linear;
+  -moz-animation: river1move 2s infinite linear;
+  -ms-animation: river1move 2s infinite linear;
+  -o-animation: river1move 2s infinite linear;
+  animation: river1move 2s infinite linear; 
+}
+.river2move
+{
+ -webkit-animation: river2move 3s infinite linear;
+  -moz-animation: river2move 3s infinite linear;
+  -ms-animation: river2move 3s infinite linear;
+  -o-animation: river2move 3s infinite linear;
+  animation: river2move 3s infinite linear; 
+}
 .fallground
 {
   -webkit-animation: groundup 0.6s  linear;
@@ -449,6 +537,116 @@ body {
   -moz-animation-fill-mode: forwards;
   -o-animation-fill-mode: forwards;
 }
+.black
+{
+  width:10px;
+  height: 10px;
+  border-radius: 100%;
+  background: #000;
+  position: absolute;
+  left: 300px;
+  top: 50px;
+  z-index: 999999;
+}
+.dustroll
+{
+  -webkit-animation: dustroll 3s infinite linear;
+  -moz-animation: dustroll 3s infinite linear;
+  -ms-animation: dustroll 3s infinite linear;
+  -o-animation: dustroll 3s infinite linear;
+  animation: dustroll 3s infinite linear; 
+}
+
+
+
+
+@keyframes dustroll {
+ 0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+ }
+ 80%
+ {
+  transform: rotate(360deg) translateX(50px) rotate(-360deg);
+ }
+ 100% {
+    transform:translateX(150px);
+ }
+
+}
+
+@-moz-keyframes dustroll {
+0% {
+    -moz-transform: rotate(0deg) translateX(50px) rotate(0deg);
+ }
+ 80%
+ {
+  -moztransform: rotate(360deg) translateX(50px) rotate(-360deg);
+ }
+ 100% {
+    -moz-transform:translateX(150px);
+ }
+
+}
+
+@-webkit-keyframes dustroll {
+0% {
+    -webkit-transform: rotate(0deg) translateX(50px) rotate(0deg);
+ }
+ 40%
+ {
+  -webkit-transform: rotate(360deg) translateX(50px) rotate(-360deg);
+ }
+ 70%
+ {
+  left:450px;
+    -webkit-transform: rotate(0deg) translateX(100px) rotate(0deg);
+    
+ }
+ 100% {
+    left:450px;
+    -webkit-transform: rotate(0deg) translateX(100px) rotate(-0deg);
+ }
+}
+
+
+@-ms-keyframes dustroll {
+ 0% {
+    -ms-transform: rotate(0deg) translateX(50px) rotate(0deg);
+ }
+ 80%
+ {
+  -ms-transform: rotate(360deg) translateX(50px) rotate(-360deg);
+ }
+ 100% {
+    -ms-transform:translateX(150px);
+ }
+}
+
+
+@-o-keyframes dustroll {
+ 0% {
+    -o-transform: rotate(0deg) translateX(50px) rotate(0deg);
+ }
+ 80%
+ {
+  -o-transform: rotate(360deg) translateX(50px) rotate(-360deg);
+ }
+ 100% {
+    -o-transform:translateX(150px);
+ }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -528,6 +726,167 @@ body {
  }
 
 }
+
+
+
+@keyframes river2move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-3px, 13px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-moz-keyframes river2move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-3px, 13px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-webkit-keyframes river2move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-3px, 13px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-ms-keyframes river2move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-3px, 13px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-o-keyframes river2move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-3px, 13px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+
+
+
+
+
+
+
+
+@keyframes river1move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-5px, 10px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-moz-keyframes river1move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-5px, 10px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-webkit-keyframes river1move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-5px, 10px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-ms-keyframes river1move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-5px, 10px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
+@-o-keyframes river1move {
+   from {
+    transform: translate(0, 0px);
+  }
+
+  65% {
+    transform: translate(-5px, 10px);
+  }
+to {
+    transform: translate(0, 0px);
+  }
+
+
+}
+
 
 
 

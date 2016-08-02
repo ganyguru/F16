@@ -7,13 +7,14 @@ var run=0;
 var heroDiv = document.getElementById("hero-block");
 var jump=0;
 var dinocounter=1;
-var dummyscroll1=1;
-var dummyscroll2=1;
+var dummyscroll1=0;
+var dummyscroll2=0;
 var jumpdivs=[];
 tcontact=0;
 var page1;
 var obstaclestartindex=-1;
 var obstacleendindex=-1;
+var heroforward=0;
 var contactHorizontalDistance;
 var lengthDiv=document.getElementById("layer-4");
 var page2;
@@ -104,6 +105,7 @@ function KeyboardController(keys, repeat) {
             if (timers[key]!==null)
                 clearInterval(timers[key]);
             delete timers[key];
+            checkcounter();
         }
     };
 
@@ -301,7 +303,7 @@ window.onload = function()
 	setTimeout(function(){
 		loadingout();
 		
-	},5000);
+	},500);
 	if (deviceName != "computer")
 	{
 		initTouchEvents();
@@ -324,12 +326,47 @@ for(i=0;i<obstacles.length;i++)
 currentobstacles.push($(obstacles[i]));
 window.scrollTo(0, 0);
 setElementProperties();
+
+
+
+
+}
+function checkcounter()
+{
+	if(heroforward==0)
+	{
+		if(herocounter>1)
+		{
+			$("#hero").removeClass();
+			$("#hero").addClass("fhero1");
+			herocounter=1;
+			dummyscroll1=0;
+		}
+	}
+	else
+	{
+		if(herocounter>1)
+		{
+			$("#hero").removeClass();
+			$("#hero").addClass("bhero1");
+			herocounter=1;
+			dummyscroll2=0;
+		}
+	}
+
 }
 
 function setElementProperties()
 {
 	$(".castle").css({"width":0.485*$(document).width()+"px","left":0.5*$(document).width()+"px"});
 	$(".chinawall").css({"width":1.971*$(".chinawall").height()+"px","left":0.1*$(document).width()+"px"});
+	$(".abovegrass").css({"width":2.731*$(".chinawall").height()+"px","left":0*$(document).width()+"px"});
+	$(".towergrass").css({"width":2.045*$(".towergrass").height()+"px","left":($(document).width()-0.8*2.045*$(".towergrass").height())+"px"});
+	$(".rivergrass").css({"width":7.18*$(".towergrass").height()+"px","left":0+"px"});
+	$(".river1").css({"width":12.03*$(".river1").height()+"px","left":($(document).width()-12.03*$(".river1").height())+"px"});
+	$(".river2").css({"width":24.5*$(".river2").height()+"px","left":($(document).width()-24.5*$(".river2").height())+"px"});
+	$(".store").css({"width":1.704*$(".store").height()+"px","left":($(document).width()*0.4-1.704*$(".store").height())+"px"});
+	$(".tower").css({"width":0.926*$(".tower").height()+"px","left":($(document).width()-0.8*0.926*$(".tower").height())+"px"});
 }
 
 function RightandLeftedge()
@@ -435,16 +472,16 @@ function animateHero()
 function MoveHeroBack()
 {
 
-	
+	heroforward=0;
 	var pos=0;
 	
 		if(herocounter<12)
 		{
 			dummyscroll1++;
-			if(dummyscroll1%15==0)
+			if(dummyscroll1%13==0)
 		{
 			herocounter++;
-			dummyscroll1=1;
+			dummyscroll1=0;
 		}
 
 		}
@@ -468,15 +505,16 @@ function MoveHeroBack()
 function MoveHeroFront()
 {
 
+		heroforward=1;
 		var pos=0;
 	
 		if(herocounter<12)
 		{
 			dummyscroll2++;
-			if(dummyscroll2%15==0)
+			if(dummyscroll2%13==0)
 		{
 			herocounter++;
-			dummyscroll2=1;
+			dummyscroll2=0;
 		}
 
 		}
