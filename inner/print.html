@@ -1,0 +1,30 @@
+<html>
+<head>
+<script>
+
+var str="";
+
+for(i=0;i<=16;i++)
+{
+	str+="<br><br>";
+	str+=".tp"+i+"<br>{<br>-ms-transform: rotate("+22.5*i+"deg); /* IE 9 */<br>-webkit-transform: rotate("+22.5*i+"deg); /* Chrome, Safari, Opera */<br>transform: rotate("+22.5*i+"deg);<br>}";
+	str+="<br>";
+}
+
+
+for(j=1;j<=16;j++)
+{
+	str+="<br>&lt;div class='trapbar tp"+j+"'&gt;<br>";
+	str+="&lt;div class='sbtrapezium'&gt;&lt;/div&gt;";
+	str+="<br>&lt;/div&gt;<br>";
+}
+
+</script>
+</head>
+<body>
+<div id="p"></div>
+<script type="text/javascript">
+	document.getElementById('p').innerHTML=str;
+</script>
+</body>
+<html>

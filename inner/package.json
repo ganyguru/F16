@@ -1,0 +1,25 @@
+{
+  "name": "psite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ganyguru/psite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganyguru/psite/issues"
+  },
+  "homepage": "https://github.com/ganyguru/psite#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "http": "0.0.0",
+    "st": "~1.1.0",
+    "gulp-livereload": "~3.8.1"
+  }
+}
